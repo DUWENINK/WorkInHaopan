@@ -26,14 +26,20 @@ namespace DUWENINKHopenTools.Entity
         public object CeilValue { get; set; }
     }
 
-
+    /// <summary>
+    /// 返回消息类型
+    /// </summary>
     public class DbMessage
     {
         public bool Success { get; set; }
         public string Message { get; set; }
     }
-   
 
+    public class Map
+    {
+        public string ExcelName { get; set; }
+        public string DbColunmsName { get; set; }
+    }
     
 
 

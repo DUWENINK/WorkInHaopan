@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Practices.EnterpriseLibrary.Data;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -12,6 +14,9 @@ namespace DUWENINKHopenTools.Tools
     {
         public static List<TResult> ToList<TResult>(this DataTable dt) where TResult : class, new()
         {
+            List<TResult> oblist = new List<TResult>();
+            if (dt.Rows.Count == 0)
+            { return new List<TResult>(); }
             //创建一个属性的列表  
             List<PropertyInfo> prlist = new List<PropertyInfo>();
             //获取TResult的类型实例  反射的入口  
@@ -19,7 +24,7 @@ namespace DUWENINKHopenTools.Tools
             //获得TResult 的所的Public 属性 并找出TResult属性和DataTable的列名称相同的属性(PropertyInfo) 并加入到属性列表  
             Array.ForEach(t.GetProperties(), p => { if (dt.Columns.IndexOf(p.Name) != -1) prlist.Add(p); });
             //创建返回的集合  
-            List<TResult> oblist = new List<TResult>();
+            
             foreach (DataRow row in dt.Rows)
             {
                 //创建TResult的实例  
@@ -31,7 +36,5 @@ namespace DUWENINKHopenTools.Tools
             }
             return oblist;
         }
-
-
     }
 }

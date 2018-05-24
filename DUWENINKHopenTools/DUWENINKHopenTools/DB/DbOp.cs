@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DUWENINKHopenTools.Entity;
+using DUWENINKHopenTools.Tools;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 
 namespace DUWENINKHopenTools.DB
@@ -14,6 +17,10 @@ namespace DUWENINKHopenTools.DB
    public class DbOp
     {
         private readonly string _connectionString = "ConnectionString";
+        /// <summary>
+        /// 类的构造函数
+        /// </summary>
+        /// <param name="connectionString"></param>
         public DbOp(string connectionString)
         {
             if (!string.IsNullOrEmpty(connectionString))
@@ -48,7 +55,6 @@ namespace DUWENINKHopenTools.DB
                     ceil.CeilType = GetDbType(p.PropertyType.Name);
                     ceilsList.Add(ceil);
                 }
-
                 StringBuilder sbName = new StringBuilder();
                 StringBuilder sbValue = new StringBuilder();
                 sbName.Append(IsMySqlDb(db) ? "(" : "([");
@@ -88,7 +94,12 @@ namespace DUWENINKHopenTools.DB
 
             return message;
         }
-
+        /// <summary>
+        /// 根据给的实体类删除数据,删除条件不能为null
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <returns>是否删除成功,删除成功返回语句,删除失败抛出异常</returns>
         public DbMessage Delete<T>(T t)
         {
             DbMessage message = new DbMessage();
@@ -136,24 +147,45 @@ namespace DUWENINKHopenTools.DB
 
             return message;
         }
-
-        public List<T> Select<T>(T t=default(T))
+        /// <summary>
+        /// 根据entity选取数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public List<T> Select<T>(T t) where T : class, new()
         {
             Database db = new DatabaseProviderFactory().Create(_connectionString);
-          
+           
             if (t == null)
             {
-                var type = t.GetType();//type.tostring()
-                string sql = "insert into " + type.Name;
-
+               return new List<T>();
             }
-            else
+
+            var type = t.GetType();//type.tostring()
+            string sql = "select * from " + type.Name +" where  1 = 1 ";
+            List<Ceils> ceilsList = new List<Ceils>();
+            var entityType = t.GetType().GetProperties();
+            foreach (var p in entityType)
             {
-                
+                Ceils ceil = new Ceils { CeilName = p.Name.ToUpper() };
+                object value = entityType.First(x => x.Name == p.Name).GetValue(t, null);
+                if (value == null) continue;
+                ceil.CeilValue = value;
+                ceil.CeilType = GetDbType(p.PropertyType.Name);
+                ceilsList.Add(ceil);
             }
+            StringBuilder sbCondition = new StringBuilder();
+            ceilsList.ForEach(x => { sbCondition.Append(" and " + x.CeilName + "=@" + x.CeilName); });
+
+            sql += sbCondition;
+            DbCommand cmd = db.GetSqlStringCommand(sql);
+            ceilsList.ForEach(m =>
+            {
+                db.AddInParameter(cmd, m.CeilName, m.CeilType, m.CeilValue);
+            });
+            return db.ExecuteDataSet(cmd).Tables[0].ToList<T>();
         }
-
-
         private DbType GetDbType(string propertyTypeName)
         {
             DbType dbtype = DbType.String;
@@ -178,14 +210,73 @@ namespace DUWENINKHopenTools.DB
             }
             return dbtype;
         }
+        /// <summary>
+        /// 批量保存(只适用于insert语句)
+        /// </summary>
+        /// <param name="dt">要插入的数据源</param>
+        /// <param name="list">要插入的列名集合</param>
+        /// <param name="tablename">要插入的表名</param>
+        public DbMessage SBulkToDb(DataTable dt, List<string> list, string tablename)
+        {
+           
+            DbMessage message = new DbMessage();
+            try
+            {
+                Database db = new DatabaseProviderFactory().Create(_connectionString);
+                SqlConnection sqlConn = new SqlConnection(db.ConnectionString);
+                SqlBulkCopy bulkCopy = new SqlBulkCopy(sqlConn)
+                {
+                    DestinationTableName = tablename,
+                    BatchSize = dt.Rows.Count
+                };
+                if (list != null && list.Count > 0)
+                {
+                    list.ForEach(x =>
+                    {
+                        bulkCopy.ColumnMappings.Add(x, x);
+                    });
+                }
+                else
+                {
+                    foreach (DataColumn column in dt.Columns)
+                    {
+                        bulkCopy.ColumnMappings.Add(column.ColumnName, column.ColumnName);
+                    }
+                }
+                try
+                {
+                    Stopwatch watch = new Stopwatch();
+                    watch.Start();
+                    sqlConn.Open();
+                    if (dt.Rows.Count != 0)
+                        bulkCopy.WriteToServer(dt);
+                    watch.Stop();
+                    message.Message ="插入耗时:"+ watch.Elapsed.Seconds;
+                    message.Success = true;
+                }
+                finally
+                {
+                    sqlConn.Close();
+                    bulkCopy.Close();
+                }
+            }
+            catch(Exception exception)
+            {
+                message.Message = exception.Message;
+                message.Success = false;
+            }
 
-
+            return message;
+        }
+        /// <summary>
+        /// 判断是否是mysql数据库
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         private  bool IsMySqlDb(Database db)
         {
             //IL_0000: Unknown result type (might be due to invalid IL or missing references)
             return (db.DbProviderFactory == null ? "" : db.DbProviderFactory.ToString()) == "MySql.Data.MySqlClient.MySqlClientFactory";
         }
-
-
     }
 }
