@@ -1,7 +1,0 @@
-D:\GitHub\WorkInHaopan\DUWENINKHopenTools\ConsoleCheak\bin\Debug\ConsoleCheak.exe.config
-D:\GitHub\WorkInHaopan\DUWENINKHopenTools\ConsoleCheak\bin\Debug\ConsoleCheak.exe
-D:\GitHub\WorkInHaopan\DUWENINKHopenTools\ConsoleCheak\bin\Debug\ConsoleCheak.pdb
-D:\GitHub\WorkInHaopan\DUWENINKHopenTools\ConsoleCheak\obj\Debug\ConsoleCheak.csproj.CoreCompileInputs.cache
-D:\GitHub\WorkInHaopan\DUWENINKHopenTools\ConsoleCheak\obj\Debug\ConsoleCheak.exe
-D:\GitHub\WorkInHaopan\DUWENINKHopenTools\ConsoleCheak\obj\Debug\ConsoleCheak.pdb
-D:\GitHub\WorkInHaopan\DUWENINKHopenTools\ConsoleCheak\obj\Debug\ConsoleCheak.csprojAssemblyReference.cache
