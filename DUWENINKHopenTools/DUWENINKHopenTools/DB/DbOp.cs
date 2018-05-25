@@ -48,7 +48,7 @@ namespace DUWENINKHopenTools.DB
                 foreach (var p in entityType)
                 {
                     Ceils ceil = new Ceils {CeilName = p.Name.ToUpper()};
-                    if (ceil.CeilName == (primarykeyField == null ? "" : primarykeyField.ToUpper())) continue;
+                    if (ceil.CeilName == (primarykeyField == null ? string.Empty : primarykeyField.ToUpper())) continue;
                     object value = entityType.First(x => x.Name == p.Name).GetValue(t, null);
                     if (value == null) continue;
                     ceil.CeilValue = value;
@@ -275,8 +275,7 @@ namespace DUWENINKHopenTools.DB
         /// <returns></returns>
         private  bool IsMySqlDb(Database db)
         {
-            //IL_0000: Unknown result type (might be due to invalid IL or missing references)
-            return (db.DbProviderFactory == null ? "" : db.DbProviderFactory.ToString()) == "MySql.Data.MySqlClient.MySqlClientFactory";
+            return (db.DbProviderFactory == null ? string.Empty : db.DbProviderFactory.ToString()) == "MySql.Data.MySqlClient.MySqlClientFactory";
         }
     }
 }

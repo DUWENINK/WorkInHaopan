@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using DUWENINKHopenTools.Entity;
+using DUWENINKHopenTools.Extentions;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using XD.Base;
@@ -43,7 +44,6 @@ namespace DUWENINKHopenTools.Tools
                     return message;
                 }
             }
-
             try
             {
                 //根据路径通过已存在的excel来创建HSSFWorkbook，即整个excel文档
