@@ -1,0 +1,13 @@
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Release\DUWENINKHopenTools.dll
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Release\DUWENINKHopenTools.pdb
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Release\Newtonsoft.Json.dll
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Release\NPOI.dll
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Release\XD.Base.dll
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Release\XD.Base2.dll
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Release\DUWENINKHopenTools.csproj.CoreCompileInputs.cache
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Release\DUWENINKHopenTools.csproj.CopyComplete
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Release\DUWENINKHopenTools.dll
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Release\DUWENINKHopenTools.pdb
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Release\DUWENINKHopenTools.csprojAssemblyReference.cache

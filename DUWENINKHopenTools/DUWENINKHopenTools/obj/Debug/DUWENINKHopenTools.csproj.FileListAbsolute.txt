@@ -6,7 +6,6 @@ D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Debug\Newtonsof
 D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Debug\NPOI.dll
 D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Debug\XD.Base.dll
 D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\bin\Debug\XD.Base2.dll
-D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Debug\DUWENINKHopenTools.csprojAssemblyReference.cache
 D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Debug\DUWENINKHopenTools.csproj.CoreCompileInputs.cache
 D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Debug\DUWENINKHopenTools.csproj.CopyComplete
 D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Debug\DUWENINKHopenTools.dll

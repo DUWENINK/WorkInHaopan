@@ -24,5 +24,14 @@ namespace DUWENINKHopenTools.Extentions
         {
             return condition ? source.Where(function).ToList() : source;
         }
+
+
+        public static void Trim<T>(this List<T> list)
+        {
+            list.ForEach(x =>
+            {
+
+            });
+        }
     }
 }
