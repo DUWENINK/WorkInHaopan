@@ -7,17 +7,9 @@ using DUWENINKHopenTools.Entity;
 
 namespace DUWENINKHopenTools.Attribute
 {
-    public class MapLisAttribute: System.Attribute
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public class MapLisAttribute : System.Attribute
     {
-        private List<Map> _mapList;
-
-        public MapLisAttribute(List<Map> mapList)
-        {
-            _mapList = mapList;
-        }
-        public bool IsValid()
-        {
-
-        }
+      
     }
 }

@@ -28,6 +28,7 @@ namespace DUWENINKHopenTools.DB
                 _connectionString = connectionString;
             }
         }
+
         /// <summary>
         /// 实体类的插入方法
         /// Author：DUWENINK
@@ -35,7 +36,8 @@ namespace DUWENINKHopenTools.DB
         /// <typeparam name="T">实体类的类型,类型必须和表名严格对应</typeparam>
         /// <param name="t">实体类变量</param>
         /// <param name="primarykeyField">自增型主键,跳过插入</param>
-        public DbMessage Insert<T>(T t, string primarykeyField = null)
+        /// <param name="needParameterReturn">是否返回参数化sql</param>
+        public DbMessage Insert<T>(T t, string primarykeyField = null, bool needParameterReturn=true)
         {
             DbMessage message=new DbMessage();
             try
@@ -57,14 +59,17 @@ namespace DUWENINKHopenTools.DB
                 }
                 StringBuilder sbName = new StringBuilder();
                 StringBuilder sbValue = new StringBuilder();
+                StringBuilder sbText = new StringBuilder();
                 sbName.Append(IsMySqlDb(db) ? "(" : "([");
                 sbValue.Append("(");
+                sbText.Append("(");
                 if (IsMySqlDb(db))
                 {
                     for (int i = 0; i < ceilsList.Count; i++)
                     {
                         sbName.Append(ceilsList[i].CeilName + (i == ceilsList.Count - 1 ? string.Empty : ","));
                         sbValue.Append("@" + ceilsList[i].CeilName + (i == ceilsList.Count - 1 ? string.Empty : ","));
+                        sbText.Append("'" + ceilsList[i].CeilValue + "'" + (i == ceilsList.Count - 1 ? string.Empty : ","));
                     }
                 }
                 else
@@ -73,12 +78,14 @@ namespace DUWENINKHopenTools.DB
                     {
                         sbName.Append(ceilsList[i].CeilName + (i == ceilsList.Count - 1 ? "]" : "],["));
                         sbValue.Append("@" + ceilsList[i].CeilName + (i == ceilsList.Count - 1 ? string.Empty : ","));
+                        sbText.Append("'" + ceilsList[i].CeilValue +"'"+ (i == ceilsList.Count - 1 ? string.Empty : ","));
                     }
                 }
 
                 sbName.Append(")");
                 sbValue.Append(")");
-                sql = sql + sbName + (IsMySqlDb(db) ? "value" : "values") + sbValue;
+                sbText.Append(")");
+                sql = sql + sbName + (IsMySqlDb(db) ? "value" : "values") +( needParameterReturn? sbValue.ToString(): sbText.ToString());
                 DbCommand cmd = db.GetSqlStringCommand(sql);
                 ceilsList.ForEach(m => { db.AddInParameter(cmd, m.CeilName, m.CeilType, m.CeilValue); });
                 db.ExecuteNonQuery(cmd);
@@ -218,11 +225,18 @@ namespace DUWENINKHopenTools.DB
         /// <param name="tablename">要插入的表名</param>
         public DbMessage SBulkToDb(DataTable dt, List<string> list, string tablename)
         {
-           
+            
+                
+
             DbMessage message = new DbMessage();
             try
             {
                 Database db = new DatabaseProviderFactory().Create(_connectionString);
+                if (IsMySqlDb(db))
+                {
+                    message.Message = "批量插入暂不支持MySql数据库";
+                    message.Success = false;
+                }
                 SqlConnection sqlConn = new SqlConnection(db.ConnectionString);
                 SqlBulkCopy bulkCopy = new SqlBulkCopy(sqlConn)
                 {

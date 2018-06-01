@@ -29,8 +29,7 @@ namespace DUWENINKHopenTools.Tools
         public DbMessage ReadXlsToDataTable(ref DataTable dtOutDataTable, List<Entity.Map> mapList,Stream fileStream, bool isStrict=false, int sheetIndex=0,int startRow=0)
         {
             DbMessage message = new DbMessage();
-          
-            if (mapList.GroupBy(c => c.DbColunmsName).Count(o => o.Count() > 1) != 0|| mapList.GroupBy(c => c.ExcelName).Count(o => o.Count() > 1) != 0)
+            if (MapListHasRepeat(mapList))
             {
                 message.Success = false;
                 message.Message = "Map中有重复项";
@@ -113,7 +112,7 @@ namespace DUWENINKHopenTools.Tools
         /// </summary>
         /// <param name="mapList"></param>
         /// <returns></returns>
-        public bool CheckMapList(List<Entity.Map> mapList)
+        private bool MapListHasRepeat(List<Entity.Map> mapList)
         {
             return mapList.GroupBy(c => c.DbColunmsName).Count(o => o.Count() > 1) != 0 ||
                    mapList.GroupBy(c => c.ExcelName).Count(o => o.Count() > 1) != 0;

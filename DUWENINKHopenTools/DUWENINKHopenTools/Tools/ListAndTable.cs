@@ -30,7 +30,17 @@ namespace DUWENINKHopenTools.Tools
                 //创建TResult的实例  
                 TResult ob = new TResult();
                 //找到对应的数据,并赋值  
-                prlist.ForEach(p => { if (row[p.Name] != DBNull.Value && p.CanWrite) p.SetValue(ob, row[p.Name], null); });
+                prlist.ForEach(p => 
+                {
+                    if (row[p.Name] != DBNull.Value && p.CanWrite)
+                    {
+                        p.SetValue(ob, row[p.Name], null);
+                    }
+                    else
+                    {
+                        p.SetValue(ob,string.Empty, null);
+                    }
+                });
                 //放入到返回的集合中.  
                 oblist.Add(ob);
             }

@@ -37,14 +37,13 @@ namespace DUWENINKHopenTools.Entity
 
     public  class Map
     {
+      
         public string ExcelName { get; set; }
         public string DbColunmsName { get; set; }
     }
 
-    public class MapConfig
-    {
-        public List<Map> MapList { get; set; }
-    }
+ 
+      
 
 
 }

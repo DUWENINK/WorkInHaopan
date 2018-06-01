@@ -10,3 +10,4 @@ D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Debug\DUWENINKH
 D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Debug\DUWENINKHopenTools.csproj.CopyComplete
 D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Debug\DUWENINKHopenTools.dll
 D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Debug\DUWENINKHopenTools.pdb
+D:\GitHub\WorkInHaopan\DUWENINKHopenTools\DUWENINKHopenTools\obj\Debug\DUWENINKHopenTools.csprojAssemblyReference.cache

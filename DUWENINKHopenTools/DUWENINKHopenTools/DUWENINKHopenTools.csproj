@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\MapLisAttribute.cs" />
     <Compile Include="DB\DbOp.cs" />
     <Compile Include="Entity\DbOpEntity.cs" />
     <Compile Include="Extentions\DataTableExtention.cs" />
@@ -68,6 +69,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\ExcelAndTable.cs" />
     <Compile Include="Tools\ListAndTable.cs" />
+    <Compile Include="Tools\LogWriter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath) $(SolutionDir)XDFrame\bin\</PostBuildEvent>
+  </PropertyGroup>
 </Project>
