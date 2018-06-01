@@ -210,6 +210,15 @@ namespace DUWENINKHopenTools.DB
                 case "Decimal":
                     dbtype = DbType.Decimal;
                     break;
+                case "Int64":
+                    dbtype = DbType.Int64;
+                    break;
+                case "Guid":
+                    dbtype = DbType.Guid;
+                    break;
+                case "Object":
+                    dbtype = DbType.Object;
+                    break;
                 default:
 
                     break;
@@ -225,9 +234,6 @@ namespace DUWENINKHopenTools.DB
         /// <param name="tablename">要插入的表名</param>
         public DbMessage SBulkToDb(DataTable dt, List<string> list, string tablename)
         {
-            
-                
-
             DbMessage message = new DbMessage();
             try
             {

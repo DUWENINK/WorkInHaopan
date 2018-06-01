@@ -10,9 +10,17 @@ namespace DUWENINKHopenTools.Tools
 {
    public static class LogWriter
     {
-        public static void WriteLog(string strLog)
+        public static void WriteLogInfo(string strLog)
         {
-            string strLogPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LogFile");
+            Write(strLog, "InfoLogFile");
+        }
+        public static void WriteLogError(string strLog)
+        {
+            Write(strLog, "ErrorLogFile");
+        }
+        private static void Write(string strLog,string logFileName)
+        {
+            string strLogPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logFileName);
             //日志文件夹
             if (!Directory.Exists(strLogPath))
                 Directory.CreateDirectory(strLogPath);
@@ -25,5 +33,6 @@ namespace DUWENINKHopenTools.Tools
                 mStreamWriter.Close();
             }
         }
+
     }
 }
