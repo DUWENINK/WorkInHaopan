@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DUWENINKHopenTools.Tools
 {
+    /// <summary>
+/// /
+/// </summary>
    public static class LogWriter
     {
         public static void WriteLogInfo(string strLog)

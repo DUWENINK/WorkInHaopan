@@ -35,7 +35,7 @@ namespace DUWENINKHopenTools.Entity
         public string Message { get; set; }
     }
 
-    public  class Map
+    public abstract class Map
     {
       
         public string ExcelName { get; set; }

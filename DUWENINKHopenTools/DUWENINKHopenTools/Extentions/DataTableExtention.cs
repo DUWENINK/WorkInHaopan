@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using DUWENINKHopenTools.Entity;
 
 namespace DUWENINKHopenTools.Extentions
 {
     /// <summary>
     /// 扩展DataTable功能
     /// </summary>
-  public static class DataTableExtention
+    public static class DataTableExtention
     {
         /// <summary>
         /// 获取<param name="table">DataTable</param> 的列的名称集合
@@ -20,7 +22,7 @@ namespace DUWENINKHopenTools.Extentions
         /// <returns></returns>
         public static IEnumerable<string> GetColumnsStringList(this DataTable table)
         {
-           var result=new List<string>();
+            var result = new List<string>();
             foreach (DataColumn columns in table.Columns)
             {
                 result.Add(columns.ColumnName);
@@ -53,14 +55,56 @@ namespace DUWENINKHopenTools.Extentions
                 //找到对应的数据,并赋值  
                 prlist.ForEach(p =>
                 {
-                    if (row[p.Name] != DBNull.Value && p.CanWrite)
+                    switch (p.PropertyType.FullName)
                     {
-                        p.SetValue(ob, row[p.Name].ToString().Trim(), null);
+                        case "System.DateTime":
+                            {
+                                DateTime time = XD.Base.ConvertOp.Convert2DateTime(row[p.Name]);
+                                p.SetValue(ob, time, null);
+                                break;
+                            }
+
+                        case "System.Decimal":
+                            {
+                                decimal nums = XD.Base.ConvertOp.Convert2Decimal(row[p.Name]);
+                                p.SetValue(ob, nums, null);
+                                break;
+                            }
+                        case "System.String":
+                        {
+                            var str = XD.Base.ConvertOp.Convert2String(row[p.Name]).Trim();
+                            p.SetValue(ob, str, null);
+                                break;
+                        }
+                        case "System.Boolean": //布尔型     
+                        {
+                            var boolVar = XD.Base.ConvertOp.Convert2Boolean(row[p.Name]);
+                            p.SetValue(ob, boolVar, null);
+                            break;
+                        }
+                        case "System.Int16"://整型     
+                        case "System.Int32":
+                        case "System.Int64":
+                        case "System.Byte":
+                        {
+                            var boolVar = XD.Base.ConvertOp.Convert2Boolean(row[p.Name]);
+                            p.SetValue(ob, boolVar, null);
+                            break;
+
+                        }
+
+
+
+
+                        default:
+                            p.SetValue(ob, row[p.Name], null);
+                            break;
                     }
-                    else
-                    {
-                        p.SetValue(ob, string.Empty, null);
-                    }
+
+
+
+
+
                 });
                 //放入到返回的集合中.  
                 oblist.Add(ob);
@@ -68,6 +112,55 @@ namespace DUWENINKHopenTools.Extentions
             return oblist;
         }
 
+
+        ///  <summary>
+        ///  将DataTable 转换成 List/<dynamic/>
+        ///  reverse 反转：控制返回结果中是只存在 FilterField 指定的字段,还是排除.
+        ///  [flase 返回FilterField 指定的字段]|[true 返回结果剔除 FilterField 指定的字段]
+        ///  FilterField  字段过滤，FilterField 为空 忽略 reverse 参数；返回DataTable中的全部数
+        ///  </summary>
+        ///  <param name="table">DataTable</param>
+        /// <param name="reverse">
+        ///  反转：控制返回结果中是只存在 FilterField 指定的字段,还是排除.
+        ///  [flase 返回FilterField 指定的字段]|[true 返回结果剔除 FilterField 指定的字段]
+        /// </param>
+        ///  <param name="filterField">字段过滤，FilterField 为空 忽略 reverse 参数；返回DataTable中的全部数据</param>
+        ///  <returns>List/<dynamic/></returns>
+        public static List<dynamic> ToDynamicList(this DataTable table, bool reverse = true, params string[] filterField)
+        {
+            var modelList = new List<dynamic>();
+            foreach (DataRow row in table.Rows)
+            {
+                dynamic model = new ExpandoObject();
+                var dict = (IDictionary<string, object>)model;
+                foreach (DataColumn column in table.Columns)
+                {
+                    if (filterField.Length != 0)
+                    {
+                        if (reverse)
+                        {
+                            if (!filterField.Contains(column.ColumnName))
+                            {
+                                dict[column.ColumnName] = row[column];
+                            }
+                        }
+                        else
+                        {
+                            if (filterField.Contains(column.ColumnName))
+                            {
+                                dict[column.ColumnName] = row[column];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        dict[column.ColumnName] = row[column];
+                    }
+                }
+                modelList.Add(model);
+            }
+            return modelList;
+        }
 
 
 

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DUWENINKHopenTools.Entity;
+using DUWENINKHopenTools.Extentions;
 using DUWENINKHopenTools.Tools;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 
@@ -193,6 +194,13 @@ namespace DUWENINKHopenTools.DB
             });
             return db.ExecuteDataSet(cmd).Tables[0].ToList<T>();
         }
+
+
+        /// <summary>
+        /// 数据库字段属性和参数属性的对应关系
+        /// </summary>
+        /// <param name="propertyTypeName"></param>
+        /// <returns></returns>
         private DbType GetDbType(string propertyTypeName)
         {
             DbType dbtype = DbType.String;
@@ -226,6 +234,17 @@ namespace DUWENINKHopenTools.DB
             }
             return dbtype;
         }
+
+
+        private List<T> Get<T>()
+        {
+            return new List<T>();
+        }
+
+
+
+
+
         /// <summary>
         /// 批量保存(只适用于insert语句)
         /// </summary>
@@ -242,6 +261,7 @@ namespace DUWENINKHopenTools.DB
                 {
                     message.Message = "批量插入暂不支持MySql数据库";
                     message.Success = false;
+                    return message;
                 }
                 SqlConnection sqlConn = new SqlConnection(db.ConnectionString);
                 SqlBulkCopy bulkCopy = new SqlBulkCopy(sqlConn)
@@ -293,7 +313,7 @@ namespace DUWENINKHopenTools.DB
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
-        private  bool IsMySqlDb(Database db)
+        private static bool IsMySqlDb(Database db)
         {
             return (db.DbProviderFactory == null ? string.Empty : db.DbProviderFactory.ToString()) == "MySql.Data.MySqlClient.MySqlClientFactory";
         }
